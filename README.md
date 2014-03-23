@@ -1,4 +1,4 @@
 tiger-king
 ==========
 
-Small AngularJS - Google App Engine App
+AngularJS and Google App Engine webpage

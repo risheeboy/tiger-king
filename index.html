@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en" ng-app="tigerApp">
+ <head>
+  <title>tiger spot</title>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+  <script src="js/tigerApp.js"></script>
+ </head>
+ <body ng-controller="TigerCtrl">
+  <div>
+   I am Rishit and you are? <input ng-model="name" type="text" /> <br/>
+   <div ng-show="name">
+    Hello <span ng-bind="name"></span>! Where do you live? <input ng-model="address" type="text" speech x-webkit-speech /> <br/>
+    <div ng-show="address">
+     Then go to <span ng-bind="address"></span>. bye bye!
+    </div>
+   </div>
+  </div>
+ </body>
+</html>

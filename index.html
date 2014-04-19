@@ -17,18 +17,33 @@
  </head>
  <body ng-controller="TigerCtrl">
   <div>
-   I am Rishit and you are? <input ng-model="name" type="text" speech x-webkit-speech /> <br/>
+   I am Rishit and you are? <input ng-model="name" type="text" x-webkit-speech speech /> <br/>
    <div ng-show="name">
-    Hello <span ng-bind="name"></span>! Where do you live? <input ng-model="address" type="text" speech x-webkit-speech /> <br/>
+    Hello <span ng-bind="name"></span>! Where do you live? <input ng-model="address" type="text" x-webkit-speech speech /> <br/>
     <div ng-show="address">
      Then go to <span ng-bind="address"></span>. bye bye!
     </div>
    </div>
   </div>
+
   <div id="map-canvas"></div>
   <script>
+
    var map = new google.maps.Map(document.getElementById('map-canvas'), {zoom:10});
    map.setCenter(new google.maps.LatLng(1.3,103.8));
+   if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+      var infowindow = new google.maps.InfoWindow({
+        map: map,
+        position: pos,
+        content: 'I found you!'
+      });
+      map.setCenter(pos);
+    }, function() {
+      alert('You are invisible!');
+    });
+   }
   </script>
  </body>
 </html>

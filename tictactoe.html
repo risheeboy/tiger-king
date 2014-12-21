@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" ng-app="tiApp">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Tic Tac Toe</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script>
+    var tiApp = angular.module('tiApp', []);
+    tiApp.controller('TiCtrl', function ($scope) {
+      $scope.rows = [];
+      $scope.rows.push(['-','-','-']);
+      $scope.rows.push(['-','-','-']);
+      $scope.rows.push(['-','-','-']);
+
+
+      $scope.state = {};
+      $scope.state.player1 = 'X';
+      $scope.state.player2 = 'O';
+      $scope.state.currentSign = $scope.state.player1;
+      $scope.message = 'Please Start';
+
+      $scope.state.gameStarted = false;
+      $scope.gameOver = false;
+      $scope.put = function(row, col){
+        console.log('Clicked row: ' + row + ' column: ' + col);
+        $scope.state.gameStarted = true;
+
+        if ($scope.state.currentSign != $scope.state.player1 && $scope.state.currentSign != $scope.state.player2) {
+          $scope.state.currentSign = $scope.state.player1;
+
+          $scope.message = $scope.state.currentSign + '\'s Turn';
+        }
+        if($scope.rows[row][col] == '-' && !$scope.gameOver) {
+          $scope.rows[row][col] = $scope.state.currentSign;
+          $scope.checkWin(row, col);
+          if(!$scope.gameOver) {
+            if ($scope.state.currentSign == $scope.state.player1) {
+              $scope.state.currentSign = $scope.state.player2;
+            } else {
+              $scope.state.currentSign = $scope.state.player1;
+            }
+
+            $scope.message = $scope.state.currentSign + '\'s Turn';
+          }
+        }
+      }
+      $scope.checkWin = function (row, col) {
+        console.log('Check row: ' + row + ' column: ' + col);
+        var lastRow = $scope.rows[row];
+        $scope.checkLine(lastRow);
+        var lastCol = [$scope.rows[0][col],$scope.rows[1][col],$scope.rows[2][col]];
+        $scope.checkLine(lastCol);
+        var forwardSlash = [$scope.rows[0][2],$scope.rows[1][1],$scope.rows[2][0]];
+        $scope.checkLine(forwardSlash);
+        var backwardSlash = [$scope.rows[0][0],$scope.rows[1][1],$scope.rows[2][2]];
+        $scope.checkLine(backwardSlash);
+      }
+      $scope.checkLine = function (line) {
+        for (var i = 0; i < line.length; i++) { 
+          if(line[i] != $scope.state.currentSign) {
+            return;
+          }
+        }
+        $scope.message = $scope.state.currentSign + ' Wins!';
+        $scope.gameOver = true;
+      }
+    });
+    </script>
+  </head>
+  <body ng-controller="TiCtrl">
+
+    <div>Player 1 <input type="text" ng-model="state.player1" ng-readonly="state.gameStarted" maxlength="1" size="1" /></div>
+    <div>Player 2 <input type="text" ng-model="state.player2" ng-readonly="state.gameStarted" maxlength="1" size="1" /></div>
+<br/>
+    <span><strong>{{message}}</strong></span>
+    <table border="1">
+      <tr ng-repeat="row in rows track by $index">
+        <td ng-repeat="col in row track by $index">
+          <button ng-click="put($parent.$index,$index)">{{col}}</button>
+        </td>
+      </tr>
+    </table>
+
+  </body>
+</html>
+

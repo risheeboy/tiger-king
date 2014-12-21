@@ -5,19 +5,22 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
-      html, body, #map-canvas {
-        height: 100%;
-        margin: 0px;
-        padding: 0px
-      }
-    </style>
+html, body, #map-canvas {
+height: 100%}
+</style>
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
-  <script src="js/tigerApp.js"></script>
+  <script>
+	var tigerApp = angular.module('tigerApp', []);
+	tigerApp.controller('TigerCtrl', function ($scope) {
+		$scope.name;
+		$scope.address;
+	});
+  </script>
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=true"></script>
  </head>
  <body ng-controller="TigerCtrl">
   <div>
-   I am Rishit and you are? <input ng-model="name" type="text" x-webkit-speech speech /> <br/>
+   I am Rishit and you are? <input ng-model="name" type="text" x-webkit-speech speech />   <a href="/math.html">Math</a> <a href="/tictactoe.html">Tic-Tac-Toe</a> <a href="/4inarow.html">4 in a Row</a> <br/>
    <div ng-show="name">
     Hello <span ng-bind="name"></span>! Where do you live? <input ng-model="address" type="text" x-webkit-speech speech /> <br/>
     <div ng-show="address">
@@ -29,7 +32,7 @@
   <div id="map-canvas"></div>
   <script>
 
-	var map = new google.maps.Map(document.getElementById('map-canvas'), {zoom : 10});
+	var map = new google.maps.Map(document.getElementById('map-canvas'), {zoom : 12});
 	var geocoder = new google.maps.Geocoder();
 	map.setCenter(new google.maps.LatLng(1.36,103.965));
 	if (navigator.geolocation) {
@@ -38,16 +41,13 @@
 			var infowindow = new google.maps.InfoWindow({
 				map : map,
 				position : currentPosition,
-				content : 'I found you!'
+				content : 'I found you here!'
 			});
 			map.setCenter(currentPosition);
 			geocoder.geocode({'latLng' : currentPosition}, function(results, status) {
 				if (status == google.maps.GeocoderStatus.OK) {
 
-				  console.log(results);
-					if (results[0]) {
-						infowindow.setContent('I found you at ' + results[0].formatted_address);
-					}
+					infowindow.setContent('I found you at - ' + results[0].formatted_address);
 				}
 			});
 		}, function() {
@@ -57,3 +57,4 @@
   </script>
  </body>
 </html>
+
